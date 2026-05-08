@@ -1,10 +1,22 @@
 # Personal Finance Tracker
 
-Personal Finance Tracker is a Supabase-first web app for managing income, expenses, budgets, and savings goals in one place. The current implementation includes a React dashboard shell, Supabase Auth pages, and a PostgreSQL schema with row-level security.
+Personal Finance Tracker is a Supabase-first web app for managing income, expenses, budgets, and savings goals in one place. This README describes the completed product vision, the data model, the calculation rules, and the implementation steps needed to reach the final build.
 
-## What this project does
+## Final Product
 
-- Tracks income and expenses by category.
+When the project is complete, users will be able to:
+
+- Create an account and sign in with Supabase Auth.
+- Add income and expense transactions with categories, dates, and notes.
+- Create budgets by category and period, then see remaining amounts and percent used.
+- Track savings goals with target amounts and deadlines.
+- View a dashboard with current balance, monthly income, monthly expenses, budget progress, recent activity, and financial trends.
+- Receive realtime updates and overspending alerts when budget thresholds are crossed.
+- View charts for category spending and income-versus-expense trends.
+
+## What this project does now
+
+- Tracks income and expenses by category in a shared demo ledger.
 - Shows a dashboard with current balance, monthly income, monthly expenses, budget progress, and recent transactions.
 - Supports user sign-up and sign-in with Supabase Auth.
 - Stores finance data in Supabase Postgres with row-level security so each user only sees their own records.
@@ -28,6 +40,17 @@ Personal Finance Tracker is a Supabase-first web app for managing income, expens
 - The dashboard values are generated from shared demo data and calculation helpers in `src/lib/financeDashboard.ts`.
 - The Supabase schema and RLS policies are defined in SQL.
 - Realtime subscriptions, CRUD flows, and chart pages are planned next.
+
+## Important implementation steps
+
+1. Set up the React + Vite + TypeScript app shell and shared layout.
+2. Connect Supabase Auth for sign-up, sign-in, and session persistence.
+3. Create the PostgreSQL tables for profiles, categories, transactions, budgets, and savings goals.
+4. Enable row-level security so each user only sees their own finance records.
+5. Implement shared calculation helpers for balances, monthly totals, budget usage, and goal progress.
+6. Replace demo data with live Supabase queries.
+7. Add realtime subscriptions and overspending alerts.
+8. Add charts, polish the UI, and prepare the app for deployment.
 
 ## Setup
 
@@ -127,7 +150,7 @@ This means each signed-in user only has access to their own data unless a row is
 
 ## Dashboard values
 
-The current dashboard uses a shared demo ledger so the UI is visible before the live data layer is connected.
+The current dashboard uses a shared demo ledger so the UI is visible before the live data layer is connected. These values are also the example values the final app should reproduce when given the same sample ledger.
 
 - Current balance: `$8,420.18`
 - Monthly income: `$4,920`
@@ -142,7 +165,7 @@ The current dashboard uses a shared demo ledger so the UI is visible before the 
 
 ## How values are calculated
 
-The shared dashboard helper in `src/lib/financeDashboard.ts` is the source of truth for the demo values and formulas.
+The shared dashboard helper in `src/lib/financeDashboard.ts` is the source of truth for the demo values and formulas. The same formulas should be reused when live Supabase data is connected so the documentation and the app logic stay aligned.
 
 ### Current balance formula
 
@@ -178,24 +201,24 @@ Example values from the demo ledger:
 
 The visual progress bar is capped at 100 percent so it does not overflow the card.
 
+### Savings goal progress formula
+
+`savings goal progress = (current amount / target amount) * 100`
+
+Example: if a goal has saved `$450` out of a `$1,000` target, progress is `45%`.
+
+### Category breakdown chart formula
+
+`category share = category spending / total spending`
+
+This is the basis for pie charts, donut charts, and category breakdown reports.
+
 ### Recent transaction display rule
 
 - Income transactions render with a `+` prefix and green styling.
 - Expense transactions render with a `-` prefix and red styling.
 
 The app derives the prefix from `transactionType`, while the amount is stored as a positive number in the shared demo ledger and in the Supabase schema.
-
-### Savings goal progress formula
-
-`savings goal progress = (current amount / target amount) * 100`
-
-This is not yet rendered in the dashboard, but the schema already supports it through `current_amount` and `target_amount`.
-
-### Category breakdown chart formula
-
-`category share = category spending / total spending`
-
-This will power the pie or donut chart view once chart pages are added.
 
 ## Authentication flow
 
@@ -210,14 +233,14 @@ This will power the pie or donut chart view once chart pages are added.
 - Database and auth: Supabase cloud
 - If a custom API is added later, it can be deployed on Render, Railway, or Fly.io
 
-## Roadmap
+## Roadmap to completion
 
-1. Route protection and session persistence.
-2. Category CRUD and transaction CRUD.
-3. Budget creation, live budget calculations, and overspending alerts.
-4. Savings goals and chart visualizations.
-5. Realtime syncing, UI polish, and mobile testing.
-6. Tests, deployment, and final documentation.
+1. Connect the shared finance helpers to live Supabase queries.
+2. Add CRUD screens for transactions, categories, budgets, and goals.
+3. Add route protection and session persistence.
+4. Wire realtime budget alerts and live dashboard updates.
+5. Add charts and reporting views.
+6. Test the full flow, deploy, and document production setup.
 
 ## Notes
 
