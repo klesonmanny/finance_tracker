@@ -1,6 +1,7 @@
 export type TransactionType = 'income' | 'expense';
 
 export interface DashboardTransaction {
+  id?: string;
   name: string;
   category: string;
   amount: number;
@@ -9,6 +10,7 @@ export interface DashboardTransaction {
 }
 
 export interface DashboardBudget {
+  id?: string;
   label: string;
   category: string;
   limit: number;
@@ -17,6 +19,7 @@ export interface DashboardBudget {
 }
 
 export interface DashboardTransactionView {
+  id?: string;
   name: string;
   category: string;
   amount: number;
@@ -38,27 +41,6 @@ export interface DashboardSnapshot {
   budgetSummary: DashboardBudgetView[];
   recentTransactions: DashboardTransactionView[];
 }
-
-const demoReferenceDate = new Date('2026-05-08T12:00:00.000Z');
-const demoOpeningBalance = 5810.18;
-
-const demoTransactions: DashboardTransaction[] = [
-  { name: 'Salary', category: 'Income', amount: 4920, transactionType: 'income', date: '2026-05-07' },
-  { name: 'Grocery run', category: 'Food', amount: 62.48, transactionType: 'expense', date: '2026-05-08' },
-  { name: 'Cafe stop', category: 'Food', amount: 5.52, transactionType: 'expense', date: '2026-05-08' },
-  { name: 'Train pass', category: 'Transport', amount: 45, transactionType: 'expense', date: '2026-05-06' },
-  { name: 'Movie night', category: 'Entertainment', amount: 90, transactionType: 'expense', date: '2026-05-05' },
-  { name: 'Rent', category: 'Housing', amount: 1700, transactionType: 'expense', date: '2026-05-03' },
-  { name: 'Utilities', category: 'Utilities', amount: 180.25, transactionType: 'expense', date: '2026-05-02' },
-  { name: 'Insurance', category: 'Insurance', amount: 77.75, transactionType: 'expense', date: '2026-05-01' },
-  { name: 'Home supplies', category: 'Home', amount: 149, transactionType: 'expense', date: '2026-05-01' },
-];
-
-const demoBudgets: DashboardBudget[] = [
-  { label: 'Food', category: 'Food', limit: 250, startDate: '2026-05-01', endDate: '2026-05-31' },
-  { label: 'Transport', category: 'Transport', limit: 120, startDate: '2026-05-01', endDate: '2026-05-31' },
-  { label: 'Entertainment', category: 'Entertainment', limit: 150, startDate: '2026-05-01', endDate: '2026-05-31' },
-];
 
 export function formatCurrency(value: number, minimumFractionDigits = 2, maximumFractionDigits = 2) {
   return new Intl.NumberFormat('en-US', {
@@ -130,8 +112,10 @@ export function calculateBudgetUsed(budget: DashboardBudget, transactions: Dashb
 
 function getRelativeDayLabel(dateValue: string, referenceDate: Date) {
   const currentDate = new Date(`${dateValue}T12:00:00.000Z`);
+  const reference = new Date(referenceDate.getFullYear(), referenceDate.getMonth(), referenceDate.getDate());
+  const current = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
   const millisecondsPerDay = 24 * 60 * 60 * 1000;
-  const differenceInDays = Math.round((referenceDate.getTime() - currentDate.getTime()) / millisecondsPerDay);
+  const differenceInDays = Math.round((reference.getTime() - current.getTime()) / millisecondsPerDay);
 
   if (differenceInDays <= 0) {
     return 'Today';
@@ -148,7 +132,7 @@ export function buildDashboardSnapshot({
   transactions,
   budgets,
   openingBalance = 0,
-  referenceDate = demoReferenceDate,
+  referenceDate = new Date(),
 }: {
   transactions: DashboardTransaction[];
   budgets: DashboardBudget[];
@@ -159,6 +143,7 @@ export function buildDashboardSnapshot({
     .sort((left, right) => new Date(`${right.date}T12:00:00.000Z`).getTime() - new Date(`${left.date}T12:00:00.000Z`).getTime())
     .slice(0, 3)
     .map((transaction) => ({
+      id: transaction.id,
       name: transaction.name,
       category: transaction.category,
       amount: transaction.amount,
@@ -172,7 +157,7 @@ export function buildDashboardSnapshot({
     monthlyExpenses: calculateMonthlyExpenses(transactions, referenceDate),
     budgetSummary: budgets.map((budget) => {
       const used = calculateBudgetUsed(budget, transactions);
-      const percentUsed = Math.min((used / budget.limit) * 100, 100);
+      const percentUsed = budget.limit > 0 ? Math.min((used / budget.limit) * 100, 100) : 0;
 
       return {
         label: budget.label,
@@ -184,10 +169,3 @@ export function buildDashboardSnapshot({
     recentTransactions,
   };
 }
-
-export const dashboardSnapshot = buildDashboardSnapshot({
-  transactions: demoTransactions,
-  budgets: demoBudgets,
-  openingBalance: demoOpeningBalance,
-  referenceDate: demoReferenceDate,
-});

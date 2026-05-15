@@ -1,9 +1,27 @@
 import { ArrowDownRight, ArrowUpRight, BadgeDollarSign, WalletCards } from 'lucide-react';
 import { AppShell } from '../components/layout/AppShell';
-import { dashboardSnapshot, formatCurrency } from '../lib/financeDashboard';
+import { formatCurrency } from '../lib/financeDashboard';
+import { useDashboardData } from '../hooks/useDashboardData';
 
 export function DashboardPage() {
-  const { currentBalance, monthlyIncome, monthlyExpenses, budgetSummary, recentTransactions } = dashboardSnapshot;
+  const { snapshot, isLoading, error } = useDashboardData();
+  const { currentBalance, monthlyIncome, monthlyExpenses, budgetSummary, recentTransactions } = snapshot;
+
+  if (isLoading) {
+    return (
+      <AppShell>
+        <section className="flex min-h-[40vh] items-center justify-center text-sm text-slate-400">Loading your finances...</section>
+      </AppShell>
+    );
+  }
+
+  if (error) {
+    return (
+      <AppShell>
+        <section className="rounded-3xl border border-rose-500/30 bg-rose-500/10 p-6 text-sm text-rose-200">{error}</section>
+      </AppShell>
+    );
+  }
 
   return (
     <AppShell>
@@ -15,7 +33,7 @@ export function DashboardPage() {
               <div>
                 <h2 className="text-4xl font-semibold text-white">{formatCurrency(currentBalance)}</h2>
                 <p className="mt-2 max-w-xl text-sm leading-6 text-slate-300">
-                  A live summary of income, expenses, budgets, and savings goals will land here once the Supabase data layer is wired.
+                  Live totals from your Supabase transactions. Updates automatically when data changes.
                 </p>
               </div>
               <div className="hidden rounded-2xl border border-accent/20 bg-accent/10 p-4 text-accent sm:block">
@@ -41,8 +59,10 @@ export function DashboardPage() {
             </div>
 
             <div className="mt-5 space-y-4">
-              {budgetSummary.map((budget) => {
-                return (
+              {budgetSummary.length === 0 ? (
+                <p className="text-sm text-slate-400">No budgets yet. Add budgets in Supabase to track category spending.</p>
+              ) : (
+                budgetSummary.map((budget) => (
                   <div key={budget.label} className="space-y-2">
                     <div className="flex items-center justify-between text-sm text-slate-300">
                       <span>{budget.label}</span>
@@ -54,8 +74,8 @@ export function DashboardPage() {
                       <div className="h-2 rounded-full bg-gradient-to-r from-accent to-emerald-300" style={{ width: `${budget.percentUsed}%` }} />
                     </div>
                   </div>
-                );
-              })}
+                ))
+              )}
             </div>
           </section>
 
@@ -63,19 +83,27 @@ export function DashboardPage() {
             <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Recent activity</p>
             <h3 className="mt-1 text-xl font-semibold text-white">Latest transactions</h3>
             <div className="mt-5 space-y-3">
-              {recentTransactions.map((transaction) => (
-                <article key={transaction.name} className="flex items-center justify-between rounded-2xl border border-white/10 bg-slate-950/40 px-4 py-3">
-                  <div>
-                    <p className="font-medium text-white">{transaction.name}</p>
-                    <p className="text-sm text-slate-400">
-                      {transaction.category} · {transaction.dateLabel}
+              {recentTransactions.length === 0 ? (
+                <p className="text-sm text-slate-400">No transactions yet. Add income and expenses to see activity here.</p>
+              ) : (
+                recentTransactions.map((transaction) => (
+                  <article
+                    key={transaction.id ?? `${transaction.name}-${transaction.dateLabel}`}
+                    className="flex items-center justify-between rounded-2xl border border-white/10 bg-slate-950/40 px-4 py-3"
+                  >
+                    <div>
+                      <p className="font-medium text-white">{transaction.name}</p>
+                      <p className="text-sm text-slate-400">
+                        {transaction.category} · {transaction.dateLabel}
+                      </p>
+                    </div>
+                    <p className={transaction.transactionType === 'expense' ? 'text-rose-300' : 'text-emerald-300'}>
+                      {transaction.transactionType === 'expense' ? '-' : '+'}
+                      {formatCurrency(transaction.amount)}
                     </p>
-                  </div>
-                  <p className={transaction.transactionType === 'expense' ? 'text-rose-300' : 'text-emerald-300'}>
-                    {transaction.transactionType === 'expense' ? '-' : '+'}{formatCurrency(transaction.amount)}
-                  </p>
-                </article>
-              ))}
+                  </article>
+                ))
+              )}
             </div>
           </section>
         </div>
