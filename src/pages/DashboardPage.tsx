@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { ArrowDownRight, ArrowUpRight, BadgeDollarSign, WalletCards } from 'lucide-react';
 import { AppShell } from '../components/layout/AppShell';
 import { formatCurrency } from '../lib/financeDashboard';
@@ -60,7 +61,12 @@ export function DashboardPage() {
 
             <div className="mt-5 space-y-4">
               {budgetSummary.length === 0 ? (
-                <p className="text-sm text-slate-400">No budgets yet. Add budgets in Supabase to track category spending.</p>
+                <p className="text-sm text-slate-400">
+                  No budgets yet.{' '}
+                  <Link to="/budgets" className="text-accentSoft hover:underline">
+                    Create a budget
+                  </Link>
+                </p>
               ) : (
                 budgetSummary.map((budget) => (
                   <div key={budget.label} className="space-y-2">
@@ -84,7 +90,12 @@ export function DashboardPage() {
             <h3 className="mt-1 text-xl font-semibold text-white">Latest transactions</h3>
             <div className="mt-5 space-y-3">
               {recentTransactions.length === 0 ? (
-                <p className="text-sm text-slate-400">No transactions yet. Add income and expenses to see activity here.</p>
+                <p className="text-sm text-slate-400">
+                  No transactions yet.{' '}
+                  <Link to="/transactions" className="text-accentSoft hover:underline">
+                    Add a transaction
+                  </Link>
+                </p>
               ) : (
                 recentTransactions.map((transaction) => (
                   <article

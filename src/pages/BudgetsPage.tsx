@@ -282,7 +282,7 @@ export function BudgetsPage() {
                       {formatCurrency(used, 0, 0)} / {formatCurrency(budget.amount, 0, 0)}
                     </span>
                     <span>{percentUsed.toFixed(0)}%</span>
-                  </motion>
+                  </div>
                   <div className="h-2 rounded-full bg-white/10">
                     <div className="h-2 rounded-full bg-gradient-to-r from-accent to-emerald-300" style={{ width: `${percentUsed}%` }} />
                   </div>
@@ -290,7 +290,7 @@ export function BudgetsPage() {
               ))
             )}
           </div>
-        </motion>
+        </div>
       </section>
     </AppShell>
   );

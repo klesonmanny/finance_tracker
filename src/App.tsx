@@ -2,6 +2,9 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { DashboardPage } from './pages/DashboardPage';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
+import { TransactionsPage } from './pages/TransactionsPage';
+import { BudgetsPage } from './pages/BudgetsPage';
+import { GoalsPage } from './pages/GoalsPage';
 import { AppShell } from './components/layout/AppShell';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
@@ -34,7 +37,7 @@ export default function App() {
         path="/transactions"
         element={
           <ProtectedRoute>
-            <PlaceholderPage title="Transactions" description="Transaction creation, editing, and filtering will be added next." />
+            <TransactionsPage />
           </ProtectedRoute>
         }
       />
@@ -42,7 +45,7 @@ export default function App() {
         path="/budgets"
         element={
           <ProtectedRoute>
-            <PlaceholderPage title="Budgets" description="Budget management screens will be added next." />
+            <BudgetsPage />
           </ProtectedRoute>
         }
       />
@@ -50,17 +53,14 @@ export default function App() {
         path="/goals"
         element={
           <ProtectedRoute>
-            <PlaceholderPage title="Savings Goals" description="Savings goal creation and progress tracking will be added next." />
+            <GoalsPage />
           </ProtectedRoute>
         }
       />
       <Route
         path="*"
         element={
-          <PlaceholderPage
-            title="Not Found"
-            description="The requested route does not exist yet."
-          />
+          <PlaceholderPage title="Not Found" description="The requested route does not exist." />
         }
       />
     </Routes>

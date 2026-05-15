@@ -1,6 +1,8 @@
 import { ReactNode } from 'react';
-import { Link, NavLink } from 'react-router-dom';
-import { BarChart3, CircleDollarSign, Home, PiggyBank, Wallet } from 'lucide-react';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { BarChart3, CircleDollarSign, Home, LogOut, PiggyBank, Wallet } from 'lucide-react';
+import { supabase } from '../../lib/supabase';
+import { secondaryButtonClassName } from '../ui/formStyles';
 
 const navItems = [
   { to: '/dashboard', label: 'Dashboard', icon: Home },
@@ -10,6 +12,16 @@ const navItems = [
 ];
 
 export function AppShell({ children }: { children: ReactNode }) {
+  const navigate = useNavigate();
+
+  async function handleSignOut() {
+    if (supabase) {
+      await supabase.auth.signOut();
+    }
+
+    navigate('/login');
+  }
+
   return (
     <div className="min-h-screen text-slate-100">
       <div className="mx-auto flex min-h-screen w-full max-w-7xl flex-col gap-6 px-4 py-4 sm:px-6 lg:px-8">
@@ -24,28 +36,34 @@ export function AppShell({ children }: { children: ReactNode }) {
             </div>
           </Link>
 
-          <nav className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <NavLink
-                  key={item.to}
-                  to={item.to}
-                  className={({ isActive }) =>
-                    [
-                      'flex items-center justify-center gap-2 rounded-2xl border px-4 py-3 text-sm font-medium transition',
-                      isActive
-                        ? 'border-accent/40 bg-accent/15 text-white'
-                        : 'border-white/10 bg-slate-950/30 text-slate-300 hover:border-white/20 hover:bg-white/5',
-                    ].join(' ')
-                  }
-                >
-                  <Icon className="h-4 w-4" />
-                  <span>{item.label}</span>
-                </NavLink>
-              );
-            })}
-          </nav>
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
+            <nav className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+              {navItems.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <NavLink
+                    key={item.to}
+                    to={item.to}
+                    className={({ isActive }) =>
+                      [
+                        'flex items-center justify-center gap-2 rounded-2xl border px-4 py-3 text-sm font-medium transition',
+                        isActive
+                          ? 'border-accent/40 bg-accent/15 text-white'
+                          : 'border-white/10 bg-slate-950/30 text-slate-300 hover:border-white/20 hover:bg-white/5',
+                      ].join(' ')
+                    }
+                  >
+                    <Icon className="h-4 w-4" />
+                    <span>{item.label}</span>
+                  </NavLink>
+                );
+              })}
+            </nav>
+            <button type="button" className={`${secondaryButtonClassName} flex items-center justify-center gap-2`} onClick={() => void handleSignOut()}>
+              <LogOut className="h-4 w-4" />
+              Sign out
+            </button>
+          </div>
         </header>
 
         <main className="flex-1 rounded-3xl border border-white/10 bg-slate-950/40 p-5 shadow-glow backdrop-blur sm:p-6 lg:p-8">

@@ -195,7 +195,7 @@ export function GoalsPage() {
                   Cancel
                 </button>
               ) : null}
-            </motion>
+            </div>
           </form>
 
           <div className="space-y-3">
