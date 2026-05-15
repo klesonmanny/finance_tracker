@@ -5,7 +5,7 @@ import { formatCurrency } from '../lib/financeDashboard';
 import { useDashboardData } from '../hooks/useDashboardData';
 
 export function DashboardPage() {
-  const { snapshot, isLoading, error } = useDashboardData();
+  const { snapshot, goals, isLoading, error } = useDashboardData();
   const { currentBalance, monthlyIncome, monthlyExpenses, budgetSummary, recentTransactions } = snapshot;
 
   if (isLoading) {
@@ -118,6 +118,46 @@ export function DashboardPage() {
             </div>
           </section>
         </div>
+
+        <section className="rounded-3xl border border-white/10 bg-white/5 p-5">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Savings goals</p>
+              <h3 className="mt-1 text-xl font-semibold text-white">Goal progress</h3>
+            </div>
+            <Link to="/goals" className="text-sm text-accentSoft hover:underline">
+              Manage goals
+            </Link>
+          </div>
+          <div className="mt-5 space-y-4">
+            {goals.length === 0 ? (
+              <p className="text-sm text-slate-400">
+                No goals yet.{' '}
+                <Link to="/goals" className="text-accentSoft hover:underline">
+                  Create a savings goal
+                </Link>
+              </p>
+            ) : (
+              goals.slice(0, 3).map((goal) => {
+                const progress = goal.target_amount > 0 ? Math.min((goal.current_amount / goal.target_amount) * 100, 100) : 0;
+
+                return (
+                  <div key={goal.id} className="space-y-2">
+                    <div className="flex items-center justify-between text-sm text-slate-300">
+                      <span className="font-medium text-white">{goal.name}</span>
+                      <span>
+                        {formatCurrency(goal.current_amount, 0, 0)} / {formatCurrency(goal.target_amount, 0, 0)}
+                      </span>
+                    </div>
+                    <div className="h-2 rounded-full bg-white/10">
+                      <div className="h-2 rounded-full bg-gradient-to-r from-accent to-emerald-300" style={{ width: `${progress}%` }} />
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </div>
+        </section>
       </section>
     </AppShell>
   );

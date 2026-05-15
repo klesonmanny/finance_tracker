@@ -1,5 +1,6 @@
 import type { RealtimeChannel } from '@supabase/supabase-js';
-import { fetchBudgets, fetchTransactions, subscribeTableChanges, unsubscribeTableChanges } from './financeApi';
+import { fetchBudgets, fetchSavingsGoals, fetchTransactions, subscribeTableChanges, unsubscribeTableChanges } from './financeApi';
+import type { SavingsGoalRecord } from './financeTypes';
 import { buildDashboardSnapshot, type DashboardBudget, type DashboardTransaction } from './financeDashboard';
 
 function mapToDashboardTransaction(
@@ -27,13 +28,16 @@ function mapToDashboardBudget(budget: Awaited<ReturnType<typeof fetchBudgets>>[n
 }
 
 export async function fetchFinanceRecords() {
-  const [transactions, budgets] = await Promise.all([fetchTransactions(), fetchBudgets()]);
+  const [transactions, budgets, goals] = await Promise.all([fetchTransactions(), fetchBudgets(), fetchSavingsGoals()]);
 
   return {
     transactions: transactions.map(mapToDashboardTransaction),
     budgets: budgets.map(mapToDashboardBudget),
+    goals,
   };
 }
+
+export type { SavingsGoalRecord };
 
 export function subscribeFinanceUpdates(onChange: () => void): RealtimeChannel | null {
   return subscribeTableChanges(['transactions', 'budgets', 'savings_goals'], onChange);

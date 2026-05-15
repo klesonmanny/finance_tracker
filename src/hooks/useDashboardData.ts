@@ -5,6 +5,7 @@ import { fetchFinanceRecords, subscribeFinanceUpdates, unsubscribeFinanceUpdates
 export function useDashboardData() {
   const [transactions, setTransactions] = useState<Awaited<ReturnType<typeof fetchFinanceRecords>>['transactions']>([]);
   const [budgets, setBudgets] = useState<Awaited<ReturnType<typeof fetchFinanceRecords>>['budgets']>([]);
+  const [goals, setGoals] = useState<Awaited<ReturnType<typeof fetchFinanceRecords>>['goals']>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -13,6 +14,7 @@ export function useDashboardData() {
       const records = await fetchFinanceRecords();
       setTransactions(records.transactions);
       setBudgets(records.budgets);
+      setGoals(records.goals);
       setError(null);
     } catch (loadError) {
       const message = loadError instanceof Error ? loadError.message : 'Failed to load finance data.';
@@ -55,6 +57,7 @@ export function useDashboardData() {
 
   return {
     snapshot,
+    goals,
     isLoading,
     error,
     reload: loadRecords,
