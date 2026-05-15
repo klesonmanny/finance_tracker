@@ -1,6 +1,7 @@
 import { FormEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AppShell } from '../components/layout/AppShell';
+import { inputClassName, labelClassName, linkClassName, primaryButtonClassName, errorBoxClassName } from '../components/ui/formStyles';
 import { supabase } from '../lib/supabase';
 
 export function RegisterPage() {
@@ -54,17 +55,17 @@ export function RegisterPage() {
 
   return (
     <AppShell>
-      <section className="mx-auto max-w-md space-y-6 rounded-3xl border border-white/10 bg-white/5 p-6">
+      <section className="mx-auto max-w-md space-y-6 rounded-3xl border border-slate-200 bg-white p-6">
         <div>
-          <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Authentication</p>
-          <h2 className="mt-2 text-2xl font-semibold text-white">Create your account</h2>
-          <p className="mt-2 text-sm leading-6 text-slate-300">Create a Supabase account to start tracking your finances.</p>
+          <p className="text-sm uppercase tracking-[0.24em] text-slate-500">Authentication</p>
+          <h2 className="mt-2 text-2xl font-semibold text-slate-900">Create your account</h2>
+          <p className="mt-2 text-sm leading-6 text-slate-600">Create a Supabase account to start tracking your finances.</p>
         </div>
         <form className="space-y-4" onSubmit={handleSubmit}>
-          <label className="block space-y-2 text-sm text-slate-300">
+          <label className={labelClassName}>
             <span>Full name</span>
             <input
-              className="w-full rounded-2xl border border-white/10 bg-slate-950/50 px-4 py-3 text-white outline-none ring-0 placeholder:text-slate-500"
+              className={inputClassName}
               type="text"
               placeholder="Alex Morgan"
               value={fullName}
@@ -73,10 +74,10 @@ export function RegisterPage() {
               required
             />
           </label>
-          <label className="block space-y-2 text-sm text-slate-300">
+          <label className={labelClassName}>
             <span>Email address</span>
             <input
-              className="w-full rounded-2xl border border-white/10 bg-slate-950/50 px-4 py-3 text-white outline-none ring-0 placeholder:text-slate-500"
+              className={inputClassName}
               type="email"
               placeholder="you@example.com"
               value={email}
@@ -85,10 +86,10 @@ export function RegisterPage() {
               required
             />
           </label>
-          <label className="block space-y-2 text-sm text-slate-300">
+          <label className={labelClassName}>
             <span>Password</span>
             <input
-              className="w-full rounded-2xl border border-white/10 bg-slate-950/50 px-4 py-3 text-white outline-none ring-0 placeholder:text-slate-500"
+              className={inputClassName}
               type="password"
               placeholder="Create a password"
               value={password}
@@ -97,19 +98,17 @@ export function RegisterPage() {
               required
             />
           </label>
-          {error ? <p className="rounded-2xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">{error}</p> : null}
-          {success ? <p className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-200">{success}</p> : null}
-          <button
-            className="w-full rounded-2xl bg-accent px-4 py-3 font-semibold text-slate-950 transition hover:bg-accentSoft disabled:cursor-not-allowed disabled:opacity-70"
-            type="submit"
-            disabled={isSubmitting}
-          >
+          {error ? <p className={errorBoxClassName}>{error}</p> : null}
+          {success ? (
+            <p className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">{success}</p>
+          ) : null}
+          <button className={`w-full ${primaryButtonClassName}`} type="submit" disabled={isSubmitting}>
             {isSubmitting ? 'Creating account...' : 'Create account'}
           </button>
         </form>
-        <p className="text-sm text-slate-400">
+        <p className="text-sm text-slate-500">
           Already have an account?{' '}
-          <Link to="/login" className="text-accentSoft hover:underline">
+          <Link to="/login" className={linkClassName}>
             Sign in
           </Link>
         </p>

@@ -12,8 +12,8 @@ function PlaceholderPage({ title, description }: { title: string; description: s
   return (
     <AppShell>
       <section className="space-y-4">
-        <h1 className="text-3xl font-semibold text-white">{title}</h1>
-        <p className="max-w-2xl text-sm leading-6 text-slate-300">{description}</p>
+        <h1 className="text-3xl font-semibold text-slate-900">{title}</h1>
+        <p className="max-w-2xl text-sm leading-6 text-slate-600">{description}</p>
       </section>
     </AppShell>
   );

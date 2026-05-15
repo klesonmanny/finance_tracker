@@ -170,8 +170,8 @@ export function BudgetsPage() {
         />
 
         <div className="grid gap-6 xl:grid-cols-[minmax(0,22rem)_1fr]">
-          <form className="space-y-4 rounded-3xl border border-white/10 bg-white/5 p-5" onSubmit={handleSubmit}>
-            <h2 className="text-lg font-semibold text-white">{editingId ? 'Edit budget' : 'Add budget'}</h2>
+          <form className="space-y-4 rounded-3xl border border-slate-200 bg-white p-5" onSubmit={handleSubmit}>
+            <h2 className="text-lg font-semibold text-slate-900">{editingId ? 'Edit budget' : 'Add budget'}</h2>
 
             <label className={labelClassName}>
               <span>Category</span>
@@ -239,7 +239,7 @@ export function BudgetsPage() {
               />
             </label>
 
-            {formError ? <p className="rounded-2xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">{formError}</p> : null}
+            {formError ? <p className="rounded-2xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-700">{formError}</p> : null}
 
             <div className="flex flex-wrap gap-2">
               <button className={primaryButtonClassName} type="submit" disabled={isSubmitting}>
@@ -255,16 +255,16 @@ export function BudgetsPage() {
 
           <div className="space-y-3">
             {budgetViews.length === 0 ? (
-              <p className="rounded-3xl border border-white/10 bg-white/5 p-6 text-sm text-slate-400">
+              <p className="rounded-3xl border border-slate-200 bg-white p-6 text-sm text-slate-500">
                 No budgets yet. Create a limit for a category to start tracking spending.
               </p>
             ) : (
               budgetViews.map(({ budget, used, percentUsed }) => (
-                <article key={budget.id} className="space-y-3 rounded-2xl border border-white/10 bg-slate-950/40 p-4">
+                <article key={budget.id} className="space-y-3 rounded-2xl border border-slate-200 bg-slate-50 p-4">
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                     <div>
-                      <p className="font-medium text-white">{budget.category_name}</p>
-                      <p className="text-sm text-slate-400">
+                      <p className="font-medium text-slate-900">{budget.category_name}</p>
+                      <p className="text-sm text-slate-500">
                         {budget.period} · {formatDisplayDate(budget.start_date)} – {formatDisplayDate(budget.end_date)}
                       </p>
                     </div>
@@ -277,14 +277,14 @@ export function BudgetsPage() {
                       </button>
                     </div>
                   </div>
-                  <div className="flex items-center justify-between text-sm text-slate-300">
+                  <div className="flex items-center justify-between text-sm text-slate-600">
                     <span>
                       {formatCurrency(used, 0, 0)} / {formatCurrency(budget.amount, 0, 0)}
                     </span>
                     <span>{percentUsed.toFixed(0)}%</span>
                   </div>
-                  <div className="h-2 rounded-full bg-white/10">
-                    <div className="h-2 rounded-full bg-gradient-to-r from-accent to-emerald-300" style={{ width: `${percentUsed}%` }} />
+                  <div className="h-2 rounded-full bg-slate-100">
+                    <div className="h-2 rounded-full bg-gradient-to-r from-accent to-emerald-500" style={{ width: `${percentUsed}%` }} />
                   </div>
                 </article>
               ))

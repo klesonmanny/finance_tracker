@@ -138,8 +138,8 @@ export function TransactionsPage() {
         />
 
         <div className="grid gap-6 xl:grid-cols-[minmax(0,22rem)_1fr]">
-          <form className="space-y-4 rounded-3xl border border-white/10 bg-white/5 p-5" onSubmit={handleSubmit}>
-            <h2 className="text-lg font-semibold text-white">{editingId ? 'Edit transaction' : 'Add transaction'}</h2>
+          <form className="space-y-4 rounded-3xl border border-slate-200 bg-white p-5" onSubmit={handleSubmit}>
+            <h2 className="text-lg font-semibold text-slate-900">{editingId ? 'Edit transaction' : 'Add transaction'}</h2>
 
             <label className={labelClassName}>
               <span>Type</span>
@@ -214,7 +214,7 @@ export function TransactionsPage() {
               />
             </label>
 
-            {formError ? <p className="rounded-2xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">{formError}</p> : null}
+            {formError ? <p className="rounded-2xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-700">{formError}</p> : null}
 
             <div className="flex flex-wrap gap-2">
               <button className={primaryButtonClassName} type="submit" disabled={isSubmitting}>
@@ -237,8 +237,8 @@ export function TransactionsPage() {
                   className={[
                     'rounded-2xl border px-4 py-2 text-sm font-medium capitalize transition',
                     filter === value
-                      ? 'border-accent/40 bg-accent/15 text-white'
-                      : 'border-white/10 bg-slate-950/30 text-slate-300 hover:bg-white/5',
+                      ? 'border-accent/40 bg-accent/15 text-slate-900'
+                      : 'border-slate-200 bg-slate-50 text-slate-600 hover:bg-white',
                   ].join(' ')}
                   onClick={() => setFilter(value)}
                 >
@@ -249,24 +249,24 @@ export function TransactionsPage() {
 
             <div className="space-y-3">
               {filteredTransactions.length === 0 ? (
-                <p className="rounded-3xl border border-white/10 bg-white/5 p-6 text-sm text-slate-400">
+                <p className="rounded-3xl border border-slate-200 bg-white p-6 text-sm text-slate-500">
                   No transactions yet. Add your first entry using the form.
                 </p>
               ) : (
                 filteredTransactions.map((transaction) => (
                   <article
                     key={transaction.id}
-                    className="flex flex-col gap-3 rounded-2xl border border-white/10 bg-slate-950/40 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
+                    className="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
                   >
                     <div>
-                      <p className="font-medium text-white">{transaction.description || transaction.category_name}</p>
-                      <p className="text-sm text-slate-400">
+                      <p className="font-medium text-slate-900">{transaction.description || transaction.category_name}</p>
+                      <p className="text-sm text-slate-500">
                         {transaction.category_name} · {formatDisplayDate(transaction.transaction_date)} ·{' '}
                         <span className="capitalize">{transaction.transaction_type}</span>
                       </p>
                     </div>
                     <div className="flex items-center gap-3">
-                      <p className={transaction.transaction_type === 'expense' ? 'text-rose-300' : 'text-emerald-300'}>
+                      <p className={transaction.transaction_type === 'expense' ? 'text-rose-600' : 'text-emerald-600'}>
                         {transaction.transaction_type === 'expense' ? '-' : '+'}
                         {formatCurrency(transaction.amount)}
                       </p>

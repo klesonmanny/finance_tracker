@@ -23,15 +23,15 @@ export function AppShell({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen text-slate-100">
+    <div className="min-h-screen text-slate-800">
       <div className="mx-auto flex min-h-screen w-full max-w-7xl flex-col gap-6 px-4 py-4 sm:px-6 lg:px-8">
-        <header className="flex flex-col gap-4 rounded-3xl border border-white/10 bg-white/5 p-5 shadow-glow backdrop-blur xl:flex-row xl:items-center xl:justify-between">
-          <Link to="/dashboard" className="flex items-center gap-3 text-white">
-            <div className="grid h-11 w-11 place-items-center rounded-2xl bg-accent/15 text-accent">
+        <header className="flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white p-5 shadow-glow xl:flex-row xl:items-center xl:justify-between">
+          <Link to="/dashboard" className="flex items-center gap-3 text-slate-900">
+            <div className="grid h-11 w-11 place-items-center rounded-2xl bg-emerald-50 text-accent">
               <BarChart3 className="h-5 w-5" />
             </div>
             <div>
-              <p className="text-xs uppercase tracking-[0.28em] text-slate-400">Personal Finance Tracker</p>
+              <p className="text-xs uppercase tracking-[0.28em] text-slate-500">Personal Finance Tracker</p>
               <h1 className="text-lg font-semibold">Money, budgets, and goals in one place</h1>
             </div>
           </Link>
@@ -48,8 +48,8 @@ export function AppShell({ children }: { children: ReactNode }) {
                       [
                         'flex items-center justify-center gap-2 rounded-2xl border px-4 py-3 text-sm font-medium transition',
                         isActive
-                          ? 'border-accent/40 bg-accent/15 text-white'
-                          : 'border-white/10 bg-slate-950/30 text-slate-300 hover:border-white/20 hover:bg-white/5',
+                          ? 'border-emerald-200 bg-emerald-50 text-emerald-900'
+                          : 'border-slate-200 bg-slate-50 text-slate-600 hover:border-slate-300 hover:bg-white',
                       ].join(' ')
                     }
                   >
@@ -66,9 +66,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
         </header>
 
-        <main className="flex-1 rounded-3xl border border-white/10 bg-slate-950/40 p-5 shadow-glow backdrop-blur sm:p-6 lg:p-8">
-          {children}
-        </main>
+        <main className="flex-1 rounded-3xl border border-slate-200 bg-white p-5 shadow-glow sm:p-6 lg:p-8">{children}</main>
       </div>
     </div>
   );

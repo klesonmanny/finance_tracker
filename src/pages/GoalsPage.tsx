@@ -135,8 +135,8 @@ export function GoalsPage() {
         <PageHeader title="Savings goals" description="Track progress toward your targets and update saved amounts anytime." />
 
         <div className="grid gap-6 xl:grid-cols-[minmax(0,22rem)_1fr]">
-          <form className="space-y-4 rounded-3xl border border-white/10 bg-white/5 p-5" onSubmit={handleSubmit}>
-            <h2 className="text-lg font-semibold text-white">{editingId ? 'Edit goal' : 'Add goal'}</h2>
+          <form className="space-y-4 rounded-3xl border border-slate-200 bg-white p-5" onSubmit={handleSubmit}>
+            <h2 className="text-lg font-semibold text-slate-900">{editingId ? 'Edit goal' : 'Add goal'}</h2>
 
             <label className={labelClassName}>
               <span>Goal name</span>
@@ -184,7 +184,7 @@ export function GoalsPage() {
               />
             </label>
 
-            {formError ? <p className="rounded-2xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">{formError}</p> : null}
+            {formError ? <p className="rounded-2xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-700">{formError}</p> : null}
 
             <div className="flex flex-wrap gap-2">
               <button className={primaryButtonClassName} type="submit" disabled={isSubmitting}>
@@ -200,7 +200,7 @@ export function GoalsPage() {
 
           <div className="space-y-3">
             {goals.length === 0 ? (
-              <p className="rounded-3xl border border-white/10 bg-white/5 p-6 text-sm text-slate-400">
+              <p className="rounded-3xl border border-slate-200 bg-white p-6 text-sm text-slate-500">
                 No savings goals yet. Create one to start tracking progress.
               </p>
             ) : (
@@ -208,11 +208,11 @@ export function GoalsPage() {
                 const progress = goal.target_amount > 0 ? Math.min((goal.current_amount / goal.target_amount) * 100, 100) : 0;
 
                 return (
-                  <article key={goal.id} className="space-y-3 rounded-2xl border border-white/10 bg-slate-950/40 p-4">
+                  <article key={goal.id} className="space-y-3 rounded-2xl border border-slate-200 bg-slate-50 p-4">
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                       <div>
-                        <p className="font-medium text-white">{goal.name}</p>
-                        <p className="text-sm text-slate-400">
+                        <p className="font-medium text-slate-900">{goal.name}</p>
+                        <p className="text-sm text-slate-500">
                           {formatCurrency(goal.current_amount, 0, 0)} of {formatCurrency(goal.target_amount, 0, 0)}
                           {goal.target_date ? ` · due ${formatDisplayDate(goal.target_date)}` : ''}
                         </p>
@@ -230,12 +230,12 @@ export function GoalsPage() {
                         </button>
                       </div>
                     </div>
-                    <div className="flex items-center justify-between text-sm text-slate-300">
+                    <div className="flex items-center justify-between text-sm text-slate-600">
                       <span>Progress</span>
                       <span>{progress.toFixed(0)}%</span>
                     </div>
-                    <div className="h-2 rounded-full bg-white/10">
-                      <div className="h-2 rounded-full bg-gradient-to-r from-accent to-emerald-300" style={{ width: `${progress}%` }} />
+                    <div className="h-2 rounded-full bg-slate-100">
+                      <div className="h-2 rounded-full bg-gradient-to-r from-accent to-emerald-500" style={{ width: `${progress}%` }} />
                     </div>
                   </article>
                 );
