@@ -45,7 +45,7 @@ export interface DashboardSnapshot {
 export function formatCurrency(value: number, minimumFractionDigits = 2, maximumFractionDigits = 2) {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'NGN',
     minimumFractionDigits,
     maximumFractionDigits,
   }).format(value);
