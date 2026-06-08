@@ -218,9 +218,9 @@ export function GoalsPage() {
                         </p>
                       </div>
                       <div className="flex flex-wrap items-center gap-2">
-                        <button type="button" className={secondaryButtonClassName} onClick={() => void handleQuickAdd(goal, 50)}>
+                        <button type="button" className={secondaryButtonClassName} onClick={() => void handleQuickAdd(goal, 500)}>
                           <Plus className="mr-1 inline h-4 w-4" />
-                          $50
+                          N500
                         </button>
                         <button type="button" className={secondaryButtonClassName} onClick={() => startEdit(goal)} aria-label="Edit">
                           <Pencil className="h-4 w-4" />
